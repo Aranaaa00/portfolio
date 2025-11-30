@@ -1,0 +1,189 @@
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Contenedor Terminal
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.contenedor-terminal {
+  font-family: var(--fuente-terminal);
+  font-size: var(--tamano-fuente-base);
+  color: var(--color-primario);
+  background-color: rgba(26, 20, 16, 0.97);
+  backdrop-filter: blur(1px);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  box-shadow: 
+    0 0 2rem rgba(255, 185, 56, 0.15),
+    inset 0 0 10rem rgba(255, 185, 56, 0.02);
+  max-width: 75rem;
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: bootUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+// Efecto scanlines (líneas horizontales CRT)
+.contenedor-terminal::before {
+  content: '';
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radio-borde);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Cabecera
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.cabecera-terminal {
+  color: var(--color-secundario);
+  background-color: var(--color-borde);
+  padding: var(--espaciado-xs) var(--espaciado-sm);
+  border-bottom: var(--grosor-borde) solid var(--color-primario);
+  display: flex;
+  gap: var(--espaciado-sm);
+}
+
+.cabecera-terminal::before {
+  content: '● ● ●';
+  font-size: 0.625rem;
+  letter-spacing: 0.25rem;
+  color: rgba(255, 185, 56, 0.4);
+}
+
+.titulo-terminal {
+  font-size: var(--tamano-fuente-pequeno);
+  font-weight: 600;
+  text-shadow: 0 0 0.15rem var(--color-primario);
+  margin: 0;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Cuerpo
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.cuerpo-terminal {
+  padding: var(--espaciado-md);
+  min-height: 25rem;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mensaje-bienvenida {
+  margin-bottom: var(--espaciado-md);
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.03);
+  padding-bottom: var(--espaciado-sm);
+}
+
+.mensaje-bienvenida .linea-terminal {
+  animation: typing 0.05s steps(1);
+  animation-fill-mode: backwards;
+}
+
+.mensaje-bienvenida .linea-terminal:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.mensaje-bienvenida .linea-terminal:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.mensaje-bienvenida .linea-terminal:nth-child(3) {
+  animation-delay: 0.7s;
+}
+
+.linea-terminal {
+  font-size: var(--tamano-fuente-base);
+  line-height: 1.6;
+  text-shadow: 0 0 0.1rem var(--color-primario);
+  margin: 0.25rem 0;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Historial
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.historial-comandos {
+  margin-bottom: var(--espaciado-sm);
+}
+
+.historial-comandos .linea-terminal {
+  color: rgba(255, 185, 56, 0.9);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Prompt
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.prompt-terminal {
+  color: var(--color-secundario);
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  margin-top: auto;
+  margin-bottom: -0.25rem;
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+  border-top: 0.0625rem solid rgba(255, 255, 255, 0.04);
+  transition: background-color 0.2s ease;
+  display: flex;
+  gap: var(--espaciado-xs);
+}
+
+.prompt-terminal:hover {
+  background-color: rgba(255, 185, 56, 0.08);
+}
+
+.simbolo-prompt {
+  font-weight: 700;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Input Terminal
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.input-terminal {
+  font-family: var(--fuente-terminal);
+  font-size: var(--tamano-fuente-base);
+  color: var(--color-primario);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin-left: var(--espaciado-xs);
+  flex: 1;
+}
+
+.input-terminal::selection {
+  background-color: var(--color-primario);
+  color: var(--color-fondo-terminal);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Animaciones
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@keyframes parpadeo {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes bootUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes typing {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

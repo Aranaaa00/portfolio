@@ -1,0 +1,34 @@
+<section class="contenedor-terminal">
+  <header class="cabecera-terminal">
+    <h1 class="titulo-terminal">portfolio-manuel</h1>
+  </header>
+  
+  <main class="cuerpo-terminal">
+    <article class="mensaje-bienvenida">
+      <p *ngFor="let linea of mensajeBienvenida" class="linea-terminal">
+        {{ linea }}
+      </p>
+    </article>
+    
+    <!-- Historial de comandos -->
+    <article class="historial-comandos">
+      <p *ngFor="let linea of historial" class="linea-terminal">
+        {{ linea }}
+      </p>
+    </article>
+
+    <!-- Input interactivo -->
+    <footer class="prompt-terminal">
+      <label for="comando-input" class="simbolo-prompt">guest@portfolio:~$</label>
+      <input
+        id="comando-input"
+        type="text"
+        [(ngModel)]="comandoActual"
+        (keydown.enter)="ejecutarComando()"
+        class="input-terminal"
+        autocomplete="off"
+        autofocus
+      />
+    </footer>
+  </main>
+</section>

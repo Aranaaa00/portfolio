@@ -1,13 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ProyectosComponent } from './components/proyectos/proyectos';
+import { Terminal } from './components/terminal/terminal';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ProyectosComponent],
+  imports: [Terminal],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('frontend');
+  protected readonly title = signal('portfolio-terminal');
 }

@@ -1,1 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Reset Global
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Variables Globales
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+:root {
+  // Colores
+  --color-fondo-terminal: #1a1410;
+  --color-fondo-pagina: #151210;
+  --color-primario: #ffb938;
+  --color-secundario: #ff9500;
+  --color-borde: #2a2015;
+  
+  // Tipografía
+  --fuente-terminal: 'JetBrains Mono', 'Fira Code', monospace;
+  --tamano-fuente-base: 1rem;
+  --tamano-fuente-pequeno: 0.875rem;
+  
+  // Espaciados
+  --espaciado-xs: 0.5rem;
+  --espaciado-sm: 1rem;
+  --espaciado-md: 1.5rem;
+  --espaciado-lg: 2rem;
+  
+  // Bordes
+  --radio-borde: 0.5rem;
+  --grosor-borde: 0.125rem;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Body Global
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+body {
+  background: linear-gradient(135deg, #151210 80%, #23221f 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

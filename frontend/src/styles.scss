@@ -43,4 +43,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.modo-claro {
+  --color-fondo-terminal: #2a2420;
+  --color-fondo-pagina: #f0ebe3;
+  --color-primario: #d97706;
+  --color-secundario: #b45309;
+  --color-borde: #3d3630;
+  
+  background: linear-gradient(135deg, #faf8f3 0%, #f0ebe3 50%, #e8e3db 100%);
 }

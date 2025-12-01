@@ -1,19 +1,27 @@
 <section class="contenedor-terminal">
   <header class="cabecera-terminal">
     <h1 class="titulo-terminal">portfolio-manuel</h1>
+    <button class="boton-tema" (click)="cambiarTema()">
+      {{ modoClaro ? '☽' : '☀' }}
+    </button>
   </header>
   
   <main class="cuerpo-terminal">
-    <article class="mensaje-bienvenida">
-      <p *ngFor="let linea of mensajeBienvenida" class="linea-terminal">
-        {{ linea }}
-      </p>
-    </article>
-    
     <!-- Historial de comandos -->
     <article class="historial-comandos">
-      <p *ngFor="let linea of historial" class="linea-terminal">
-        {{ linea }}
+
+      <!-- Mensaje de bienvenida -->
+      <article class="mensaje-bienvenida">
+        <p *ngFor="let linea of mensajeBienvenida" class="linea-terminal">
+          {{ linea }}
+        </p>
+      </article>
+
+      <!-- Historial de comandos y respuestas -->
+      <p *ngFor="let linea of historial" 
+        class="linea-terminal" 
+        [ngClass]="linea.clase">
+        {{ linea.texto }}
       </p>
     </article>
 
@@ -24,7 +32,9 @@
         id="comando-input"
         type="text"
         [(ngModel)]="comandoActual"
-        (keydown.enter)="ejecutarComando()"
+        (keydown.enter)="ejecutarComandoDesdeEvento(($event))"
+        (keydown.arrowup)="navegarHistorial('arriba'); $event.preventDefault()"
+        (keydown.arrowdown)="navegarHistorial('abajo'); $event.preventDefault()"
         class="input-terminal"
         autocomplete="off"
         autofocus

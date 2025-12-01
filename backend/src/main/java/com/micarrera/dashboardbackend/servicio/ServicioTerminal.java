@@ -10,10 +10,11 @@ public class ServicioTerminal {
     public String formatearAyuda() {
     String comandos = "Comandos disponibles:\n" +
                      "  help (h)                    - Muestra esta ayuda\n" +
+                     "  clear (cls)                 - Limpia la pantalla\n" +
                      "  proyectos (p)               - Lista todos los proyectos\n" +
-                     "  proyectos?estado=X          - Filtra por estado\n" +
-                     "  proyectos?tecnologia=Y      - Filtra por tecnología\n" +
-                     "  proyectos?estado=X&tecnologia=Y - Combina filtros\n" +
+                     "  proyectos --estado completado   - Filtra por estado del proyecto\n" +
+                     "  proyectos --tecnologia angular  - Filtra por tecnología usada\n" +
+                     "  proyectos --estado completado --tecnologia angular - Combina filtros\n" +
                      "  about (a)                   - Información sobre mí\n" +
                      "  skills (s)                  - Mis habilidades técnicas\n" +
                      "  stats                       - Estadísticas del portfolio\n" +
@@ -82,13 +83,9 @@ public class ServicioTerminal {
     public String formatearAbout() {
         StringBuilder sb = new StringBuilder();
         
-        sb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-        sb.append("      ___    ____  ____  __  ________\n");
-        sb.append("     /   |  / __ )/ __ \\/ / / /_  __/\n");
-        sb.append("    / /| | / __  / / / / / / / / /   \n");
-        sb.append("   / ___ |/ /_/ / /_/ / /_/ / / /    \n");
-        sb.append("  /_/  |_/_____/\\____/\\____/ /_/     \n");
-        sb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
+        sb.append("===========================================\n");
+        sb.append("  ABOUT\n");
+        sb.append("===========================================\n\n");
         
         sb.append("[+] Nombre: Manuel\n");
         sb.append("[*] Estudios: 2º Desarrollo de Aplicaciones Web\n");

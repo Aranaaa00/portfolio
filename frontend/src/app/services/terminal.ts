@@ -28,7 +28,7 @@ export class TerminalService {
     }
 
     contact(): Observable<TerminalResponse> {
-        return this.ejecutarComando('contact');
+        return this.ejecutarComando('contacto');
     }
 
     stats(): Observable<TerminalResponse> {

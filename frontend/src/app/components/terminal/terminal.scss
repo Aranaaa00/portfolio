@@ -10,8 +10,8 @@
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-borde);
   box-shadow: 
-    0 0 2rem rgba(255, 185, 56, 0.15),
-    inset 0 0 10rem rgba(255, 185, 56, 0.02);
+    0 0 1rem rgba(255, 185, 56, 0.08),
+    inset 0 0 5rem rgba(255, 185, 56, 0.01);
   max-width: 75rem;
   width: 90%;
   margin: 0 auto;
@@ -62,8 +62,23 @@
 .titulo-terminal {
   font-size: var(--tamano-fuente-pequeno);
   font-weight: 600;
-  text-shadow: 0 0 0.15rem var(--color-primario);
+  text-shadow: 0 0 1px rgba(255, 185, 56, 0.3);
   margin: 0;
+}
+
+.boton-tema {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--color-primario);
+  margin-left: auto;
+  line-height: 1;
+  padding: 0.2rem;
+}
+
+body.modo-claro .boton-tema::before {
+  content: '☽';
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -71,11 +86,13 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 .cuerpo-terminal {
   padding: var(--espaciado-md);
-  min-height: 25rem;
+  height: 500px;  
+  max-height: 70vh; 
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .mensaje-bienvenida {
@@ -101,11 +118,19 @@
   animation-delay: 0.7s;
 }
 
+.historial-comandos {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scroll-behavior: smooth;
+}
+
 .linea-terminal {
   font-size: var(--tamano-fuente-base);
   line-height: 1.6;
   text-shadow: 0 0 0.1rem var(--color-primario);
   margin: 0.25rem 0;
+  text-shadow: 0 0 1px rgba(255, 185, 56, 0.2);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -134,6 +159,7 @@
   transition: background-color 0.2s ease;
   display: flex;
   gap: var(--espaciado-xs);
+  flex-shrink: 0;  
 }
 
 .prompt-terminal:hover {
@@ -162,6 +188,21 @@
 .input-terminal::selection {
   background-color: var(--color-primario);
   color: var(--color-fondo-terminal);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Estilos para respuestas de comandos
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.linea-respuesta {
+  padding-left: 1.2rem;
+  border-left: 2px solid var(--color-primario);
+  margin-left: 0.5rem;
+  opacity: 0.9;
+}
+
+.bloque-respuesta {
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

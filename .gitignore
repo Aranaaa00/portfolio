@@ -1,0 +1,25 @@
+# Variables de entorno (CRÍTICO - contraseñas)
+.env
+*.env
+
+# Frontend Angular
+node_modules/
+dist/
+.angular/
+*.log
+
+# Backend Spring Boot
+target/
+.mvn/
+mvnw
+mvnw.cmd
+*.class
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# Sistema
+.DS_Store
+Thumbs.db

@@ -1,28 +1,39 @@
 services:
-  # Base de datos PostgreSQL
-  postgres:
-    image: postgres:16
-    container_name: portfolio-postgres
+  # PostgreSQL - Solo accesible internamente
+  db:
+    image: postgres:16-alpine
+    container_name: portfolio-db
     environment:
-      POSTGRES_DB: portfolio_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - portfolio-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # Backend Spring Boot (lo configuraremos después)
-  # backend:
-  #   build: ./backend
-  #   ...
-
-  # Frontend Angular (lo configuraremos después)
-  # frontend:
-  #   build: ./frontend
-  #   ...
+  # Backend Spring Boot
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: portfolio-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - portfolio-network
 
 volumes:
   postgres_data:

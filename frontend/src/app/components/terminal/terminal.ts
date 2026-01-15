@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { TerminalService } from '../../services/terminal';
 import { TerminalResponse } from '../../models/terminal-response';
@@ -20,14 +21,15 @@ export class Terminal {
     ];
 
     comandoActual = '';
-    historial: Array<{texto: string, esComando: boolean, clase?: string}> = [];
+    historial: Array<{texto: string | SafeHtml, esComando: boolean, clase?: string}> = [];
     historialComandos: string[] = [];
     indiceHistorial: number = -1;
     modoClaro = false;
 
     constructor(
         private servicioTerminal: TerminalService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private sanitizer: DomSanitizer
     ) {}
 
     /**
@@ -103,7 +105,6 @@ export class Terminal {
     * Devuelve un Observable<TerminalResponse> si el comando existe, o null si no.
     * 
     * Ejemplo: "proyectos" → servicioTerminal.proyectos()
-    * Ejemplo: "p --tecnologia java" → servicioTerminal.proyectos({tecnologia: "java"})
     */
     private obtenerMetodoServicio(comando: string, argumentos: string[]): Observable<TerminalResponse> | null {
         if (comando === 'clear' || comando === 'cls') {
@@ -111,87 +112,51 @@ export class Terminal {
             return null;
         }
 
-        let resultado: Observable<TerminalResponse> | null = null;
-
         switch (comando) {
-            case 'clear':
-            case 'cls':
-                this.limpiarHistorial();
-                return null;
             case 'help':
             case 'h':
-                resultado = this.servicioTerminal.help();
-                break;
+                return this.servicioTerminal.help();
             
             case 'about':
             case 'a':
-                resultado = this.servicioTerminal.about();
-                break;
+                return this.servicioTerminal.about();
             
             case 'skills':
             case 's':
-                resultado = this.servicioTerminal.skills();
-                break;
+                return this.servicioTerminal.skills();
             
             case 'proyectos':
             case 'p':
-                resultado = this.manejarComandoProyectos(argumentos);
-                break;
+                return this.servicioTerminal.proyectos();
             
             case 'contacto':
             case 'c':
-                resultado = this.servicioTerminal.contact();
-                break;
+                return this.servicioTerminal.contact();
+
+            case 'abrir':
+                return this.manejarComandoAbrir(argumentos);
             
-            case 'stats':
-                resultado = this.servicioTerminal.stats();
-                break;
+            default:
+                return null;
         }
-        
-        return resultado;
     }
 
-    /**
-    * Gestiona el comando "proyectos" que puede tener filtros opcionales.
-    * Si no hay argumentos, devuelve todos los proyectos.
-    * Si hay argumentos (ej: --tecnologia angular), los parsea y los envía como filtros.
-    * 
-    * Ejemplo sin filtros: "proyectos" → GET /api/terminal/proyectos
-    * Ejemplo con filtros: "proyectos --tecnologia angular" → GET /api/terminal/proyectos?tecnologia=angular
-    */
-    private manejarComandoProyectos(argumentos: string[]): Observable<TerminalResponse> {
-        const hayArgumentos = argumentos.length > 0;
-        const resultado = hayArgumentos 
-            ? this.servicioTerminal.proyectos(this.parsearArgumentos(argumentos))
-            : this.servicioTerminal.proyectos();
-        
-        return resultado;
+    private manejarComandoAbrir(argumentos: string[]): Observable<TerminalResponse> | null {
+        const indice = this.extraerNumeroDeArgumentos(argumentos);
+        if (indice === null) {
+            this.agregarAlHistorial('[!] Uso: abrir <número>', false, 'linea-respuesta');
+            this.agregarAlHistorial('[~] Ejemplo: abrir 1', false, 'linea-respuesta');
+            return null;
+        }
+        return this.servicioTerminal.abrir(indice);
     }
 
-    /**
-    * Convierte un array de argumentos estilo Unix en un objeto de filtros.
-    * Busca patrones "--clave valor" y los convierte en {clave: valor}.
-    * 
-    * Ejemplo: ["--tecnologia", "angular", "--año", "2024"]
-    * Resultado: {tecnologia: "angular", año: "2024"}
-    */
-    private parsearArgumentos(argumentos: string[]): any {
-        const filtros: any = {};
-        
-        for (let i = 0; i < argumentos.length; i++) {
-            const esFlag = argumentos[i].startsWith('--');
-            if (esFlag) {
-                const clave = argumentos[i].substring(2);
-                const valor = argumentos[i + 1];
-                const hayValor = valor && !valor.startsWith('--');
-        
-                if (hayValor) {
-                    filtros[clave] = valor;
-                    i++;
-                }
-            }
+    private extraerNumeroDeArgumentos(argumentos: string[]): number | null {
+        if (argumentos.length === 0) {
+            return null;
         }
-        return filtros;
+        const num = parseInt(argumentos[0], 10);
+        return isNaN(num) ? null : num;
     }
 
     /**
@@ -206,7 +171,10 @@ export class Terminal {
         this.agregarAlHistorial('', false, 'bloque-respuesta');
 
         const lineas = respuesta.salida.split('\n');
-        lineas.forEach(linea => this.agregarAlHistorial(linea, false, 'linea-respuesta'));
+        lineas.forEach(linea => {
+            const lineaSegura  = this.sanitizer.bypassSecurityTrustHtml(linea);
+            this.agregarAlHistorial(lineaSegura , false, 'linea-respuesta');
+        });
         this.cdr.detectChanges();
         this.hacerScrollAbajo();
     }
@@ -218,10 +186,19 @@ export class Terminal {
     private hacerScrollAbajo(): void {
         setTimeout(() => {
             const historial = document.querySelector('.historial-comandos');
-            if (historial) {
-                historial.scrollTop = historial.scrollHeight;
+            const lineasComando = document.querySelectorAll('.historial-comandos p');
+            
+            if (historial && lineasComando.length > 0) {
+                // Buscar el último comando (no respuesta)
+                for (let i = lineasComando.length - 1; i >= 0; i--) {
+                    const lineaTexto = lineasComando[i].textContent || '';
+                    if (lineaTexto.startsWith('guest@portfolio:~$')) {
+                        lineasComando[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        break;
+                    }
+                }
             }
-        }, 0);
+        }, 100);
     }
 
     /**
@@ -237,7 +214,7 @@ export class Terminal {
     * Mantiene la separación de responsabilidades y facilita futuras mejoras
     * (como límite de líneas, timestamps, colores por tipo, etc.).
     */
-    private agregarAlHistorial(linea: string, esComando: boolean = false, clase: string = ''): void {
+    private agregarAlHistorial(linea: string | SafeHtml, esComando: boolean = false, clase: string = ''): void {
         this.historial.push({
             texto: linea,
             esComando: esComando,

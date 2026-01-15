@@ -1,4 +1,4 @@
-# Variables de entorno (CRÍTICO - contraseñas)
+# Variables de entorno
 .env
 *.env
 
@@ -10,9 +10,6 @@ dist/
 
 # Backend Spring Boot
 target/
-.mvn/
-mvnw
-mvnw.cmd
 *.class
 
 # IDEs

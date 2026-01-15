@@ -49,11 +49,26 @@ body {
 }
 
 body.modo-claro {
-  --color-fondo-terminal: #2a2420;
+  --color-fondo-terminal: #fdf6e3;
   --color-fondo-pagina: #f0ebe3;
-  --color-primario: #d97706;
-  --color-secundario: #b45309;
-  --color-borde: #3d3630;
+  --color-primario: #a86d00;
+  --color-secundario: #cb4b16;
+  --color-borde: #93a1a1;
   
-  background: linear-gradient(135deg, #faf8f3 0%, #f0ebe3 50%, #e8e3db 100%);
+  background: linear-gradient(135deg, #fdf6e3 0%, #eee8d5 50%, #d9d2c1 100%);
+  animation: ondas 8s ease-in-out infinite;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@keyframes ondas {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }

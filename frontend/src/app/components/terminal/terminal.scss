@@ -5,7 +5,7 @@
   font-family: var(--fuente-terminal);
   font-size: var(--tamano-fuente-base);
   color: var(--color-primario);
-  background-color: rgba(26, 20, 16, 0.97);
+  background-color: var(--color-fondo-terminal);
   backdrop-filter: blur(1px);
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-borde);
@@ -104,6 +104,8 @@ body.modo-claro .boton-tema::before {
 .mensaje-bienvenida .linea-terminal {
   animation: typing 0.05s steps(1);
   animation-fill-mode: backwards;
+  color: var(--color-primario);
+  font-weight: 600;
 }
 
 .mensaje-bienvenida .linea-terminal:nth-child(1) {
@@ -128,9 +130,8 @@ body.modo-claro .boton-tema::before {
 .linea-terminal {
   font-size: var(--tamano-fuente-base);
   line-height: 1.6;
-  text-shadow: 0 0 0.1rem var(--color-primario);
   margin: 0.25rem 0;
-  text-shadow: 0 0 1px rgba(255, 185, 56, 0.2);
+  text-shadow: 0 0 1px var(--color-primario);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -141,7 +142,7 @@ body.modo-claro .boton-tema::before {
 }
 
 .historial-comandos .linea-terminal {
-  color: rgba(255, 185, 56, 0.9);
+  color: var(--color-primario);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -203,6 +204,18 @@ body.modo-claro .boton-tema::before {
 .bloque-respuesta {
   margin-top: 0.75rem;
   margin-bottom: 0.5rem;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Enlaces clicables en terminal
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.historial-comandos a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.historial-comandos a:hover {
+  text-decoration-thickness: 2px;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -20,8 +20,8 @@
       <!-- Historial de comandos y respuestas -->
       <p *ngFor="let linea of historial" 
         class="linea-terminal" 
-        [ngClass]="linea.clase">
-        {{ linea.texto }}
+        [ngClass]="linea.clase"
+        [innerHTML]="linea.texto">
       </p>
     </article>
 

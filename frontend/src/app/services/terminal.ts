@@ -7,37 +7,31 @@ import { TerminalResponse } from '../models/terminal-response';
     providedIn: 'root',
 })
 export class TerminalService {
-    private apiUrl = 'http://localhost:8080/api/terminal';
+    private apiUrl = '/api/terminal';
 
     constructor(private http: HttpClient) {}
 
     help(): Observable<TerminalResponse> {
-        return this.ejecutarComando('help');
+        return this.http.get<TerminalResponse>(`${this.apiUrl}/help`);
     }
 
-    proyectos(filtros?: any): Observable<TerminalResponse> {
-        return this.ejecutarComando('proyectos', filtros);
+    proyectos(): Observable<TerminalResponse> {
+        return this.http.get<TerminalResponse>(`${this.apiUrl}/proyectos`);
     }
 
     about(): Observable<TerminalResponse> {
-        return this.ejecutarComando('about');
+        return this.http.get<TerminalResponse>(`${this.apiUrl}/about`);
     }
 
     skills(): Observable<TerminalResponse> {
-        return this.ejecutarComando('skills');
+        return this.http.get<TerminalResponse>(`${this.apiUrl}/skills`);
     }
 
     contact(): Observable<TerminalResponse> {
-        return this.ejecutarComando('contacto');
+        return this.http.get<TerminalResponse>(`${this.apiUrl}/contacto`);
     }
 
-    stats(): Observable<TerminalResponse> {
-        return this.ejecutarComando('stats');
-    }
-
-    ejecutarComando(comando: string, params?: any): Observable<TerminalResponse> {
-        return this.http.get<TerminalResponse>(`${this.apiUrl}/${comando}`, {
-        params,
-        });
+    abrir(indice: number): Observable<TerminalResponse> {
+        return this.http.get<TerminalResponse>(`${this.apiUrl}/abrir/${indice}`);
     }
 }
